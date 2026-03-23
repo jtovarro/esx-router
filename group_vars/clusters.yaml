@@ -1,8 +1,8 @@
 ---
 
 clusters:
-# Example: simple with static IP (DHCP leases are also created) and user managed VIPs
-- name: ocp4-simple-static
+# Simple with static IP (DHCP leases are also created) and user managed VIPs
+- name: sgarcia-cl1
   type: simple
   cluster_definition:
     baseDomain: gmbros.local
@@ -20,8 +20,8 @@ clusters:
     ingressVIP: 10.11.0.201
     apiVIP: 10.11.0.202
 
-# Example: simple with dynamic DHCP (no lease) and cluster managed VIPs
-- name: ocp4-simple-dynamic
+# Simple with dynamic DHCP (no lease) and cluster managed VIPs
+- name: sgarcia-cl2
   type: simple
   cluster_definition:
     baseDomain: gmbros.local
@@ -36,13 +36,18 @@ clusters:
     ingressVIP: 10.11.0.203
     apiVIP: 10.11.0.204
 
-# Example: abi-vsphere with static IP (DHCP leases are also created) and cluster managed VIPs
-- name: ocp4-abi-vsphere-static
+# abi-vsphere with static IP (DHCP leases are also created) and cluster managed VIPs
+- name: sgarcia-cl3
   type: abi-vsphere
   cluster_definition:
-    inventoryBaseDir: /home/sgarcia/src/ocp4-abi-vsphere-ansible/inventories
+    inventoryBaseDir: /home/sgarcia/src/ocp4-abi-vsphere-ansible/inventories/sgarcia
     clusterBaseDir: ~/.local/ocp4/clusters
 
+    # set this only if oc/openshift-install wrappers are used, otherwise remove these two lines
+    #binaryNaming: semver
+    #binariesDir: ~/.local/ocp4/bin
+
+    #version: stable-4.20
     baseDomain: gmbros.local
     controlPlaneReplicas: 3
     computeReplicas: 2
@@ -77,13 +82,18 @@ clusters:
         memory: 16384
       computeConfig: {}
 
-# Example: abi-vsphere with dynamic DHCP (fixed IP for rendezvous node) and cluster managed VIPs
-- name: ocp4-abi-vsphere-dynamic
+# abi-vsphere with dynamic DHCP (fixed IP for rendezvous node) and cluster managed VIPs
+- name: sgarcia-cl4
   type: abi-vsphere
   cluster_definition:
-    inventoryBaseDir: /home/sgarcia/src/ocp4-abi-vsphere-ansible/inventories
+    inventoryBaseDir: /home/sgarcia/src/ocp4-abi-vsphere-ansible/inventories/sgarcia
     clusterBaseDir: ~/.local/ocp4/clusters
 
+    # set this only if oc/openshift-install wrappers are used, otherwise remove these two lines
+    binariesNaming: semver
+    binariesDir: ~/.local/ocp4/bin
+
+    version: stable-4.20
     baseDomain: gmbros.local
 
     controlPlaneReplicas: 3
@@ -101,7 +111,7 @@ clusters:
 
     vms:
       defaultConfig:
-        cluster: zone1
+        cluster: zone3
         cpu: 4
         memory: 8192
         disk:
@@ -109,7 +119,7 @@ clusters:
         networks:
         - name: ens192
           network: VM Routed Network
-        datastore: esx1-datastore
+        datastore: esx3-datastore
       controlPlaneConfig:
         memory: 16384
       computeConfig: {}
@@ -129,3 +139,44 @@ clusters:
           gateway:
             address: 10.13.0.1
             interface: ens192
+
+- name: jct-ocp4
+  type: abi-vsphere
+  cluster_definition:
+    inventoryBaseDir: /home/sgarcia/src/ocp4-abi-vsphere-ansible/inventories/jct
+    clusterBaseDir: ~/.local/ocp4/clusters
+
+    baseDomain: gmbros.local
+    controlPlaneReplicas: 3
+    computeReplicas: 1
+
+    networkType: OVNKubernetes
+    machineNetwork:
+      cidr: 10.12.0.0/24
+      gateway:
+        address: 10.12.0.1
+      dns-resolver:
+        config:
+          server:
+          - 10.12.0.1
+      firstIP: 10.12.0.213
+
+    ingressVIP: 10.12.0.211
+    apiVIP: 10.12.0.212
+    lbManaged: cluster
+
+    vms:
+      defaultConfig:
+        cluster: zone2
+        cpu: 6
+        memory: 32768
+        disk:
+        - 150
+        - 50
+        networks:
+        - name: ens192
+          network: VM Routed Network
+        datastore: esx2-datastore
+      controlPlaneConfig: {}
+      computeConfig:
+        datastore: esx2-datastore1
