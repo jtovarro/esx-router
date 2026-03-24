@@ -1,24 +1,27 @@
 - block:
-  - name: Ensure admin user exists with sudo and password
+  - name: Ensure admin users exist with sudo
     ansible.builtin.user:
-      name: "{{ admin_user }}"
+      name: "{{ item }}"
       shell: /bin/bash
       groups: wheel
       append: yes
       state: present
+    loop: "{{ admin_users }}"
 
-  - name: Set authorized_keys for admin user
+  - name: Set authorized_keys for admin users
     ansible.posix.authorized_key:
-      user: "{{ admin_user }}"
+      user: "{{ item }}"
       state: present
-      key: "{{ lookup('file', 'files/ssh/admin_user_authorized_keys') }}"
+      key: "{{ lookup('file', 'files/ssh/' + item + '_authorized_keys') }}"
+    loop: "{{ admin_users }}"
 
-  - name: Allow passwordless sudo for admin user
+  - name: Allow passwordless sudo for admin users
     ansible.builtin.copy:
-      dest: "/etc/sudoers.d/{{ admin_user }}"
+      dest: "/etc/sudoers.d/{{ item }}"
       owner: root
       group: root
       mode: '0440'
-      content: "{{ admin_user }} ALL=(ALL) NOPASSWD:ALL\n"
+      content: "{{ item }} ALL=(ALL) NOPASSWD:ALL\n"
       validate: "visudo -cf %s"
-  when: setup_admin_user == true
+    loop: "{{ admin_users }}"
+  when: setup_admin_users == true

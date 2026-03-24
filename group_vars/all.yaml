@@ -1,7 +1,9 @@
 ---
 
-setup_admin_user: true
-admin_user: sgarcia
+setup_admin_users: true
+admin_users:
+- jtovarro
+- sgarcia
 
 setup_squid: true
 
