@@ -40,7 +40,7 @@ clusters:
 - name: sgarcia-cl3
   type: abi-vsphere
   cluster_definition:
-    inventoryBaseDir: /home/sgarcia/src/ocp4-abi-vsphere-ansible/inventories/sgarcia
+    inventoryBaseDir: "{{ lookup('env', 'HOME') }}/src/ocp4-abi-vsphere-ansible/inventories/sgarcia"
     clusterBaseDir: ~/.local/ocp4/clusters
 
     # set this only if oc/openshift-install wrappers are used, otherwise remove these two lines
@@ -86,7 +86,7 @@ clusters:
 - name: sgarcia-cl4
   type: abi-vsphere
   cluster_definition:
-    inventoryBaseDir: /home/sgarcia/src/ocp4-abi-vsphere-ansible/inventories/sgarcia
+    inventoryBaseDir: "{{ lookup('env', 'HOME') }}/src/ocp4-abi-vsphere-ansible/inventories/sgarcia"
     clusterBaseDir: ~/.local/ocp4/clusters
 
     # set this only if oc/openshift-install wrappers are used, otherwise remove these two lines
@@ -143,7 +143,7 @@ clusters:
 - name: jct-ocp4
   type: abi-vsphere
   cluster_definition:
-    inventoryBaseDir: /home/sgarcia/src/ocp4-abi-vsphere-ansible/inventories/jct
+    inventoryBaseDir: "{{ lookup('env', 'HOME') }}/src/ocp4-abi-vsphere-ansible/inventories/jct"
     clusterBaseDir: ~/.local/ocp4/clusters
 
     baseDomain: gmbros.local

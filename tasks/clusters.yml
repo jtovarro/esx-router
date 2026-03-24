@@ -95,6 +95,18 @@
         ingressVIP: "{{ cluster_def.ingressVIP | default(omit) }}"
         inventory_vars: "{{ inventory_vars if cluster_type == 'abi-vsphere' else omit }}"
 
+  - name: Ensure inventory directory exists
+    ansible.builtin.file:
+      path: "{{ item.inventory_file }}"
+      state: directory
+      mode: '0755'
+    loop: "{{ clusters_expanded | selectattr('inventory_file', 'defined') | list }}"
+    vars:
+      inventory_vars: "{{ item.inventory_vars }}"
+    delegate_to: localhost
+    run_once: true
+    when: not clusters_summary_only | default(false)
+
   - name: Write ABI inventory files for clusters
     ansible.builtin.template:
       src: ocp4_abi.inventory.yml.j2
