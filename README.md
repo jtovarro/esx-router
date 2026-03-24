@@ -14,6 +14,15 @@ python3 -m pip install -r requirements.txt
 ansible-galaxy collection install -r collections/requirements.yml
 ```
 
+## Playbook automation
+
+The following command runs the playbook, also tags can be used per specific tasks:
+
+```bash
+ansible-playbook playbook.yaml -K
+ansible-playbook playbook.yaml --tags dnsmasq -K
+```
+
 ## Topology
 ```
                                  Internet
