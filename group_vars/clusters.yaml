@@ -177,6 +177,7 @@ clusters:
         - name: ens192
           network: VM Routed Network
         datastore: esx2-datastore
+        root_device: "/dev/disk/by-path/pci-0000:03:00.0-scsi-0:0:0:0"
       controlPlaneConfig: {}
       computeConfig:
         datastore: esx2-datastore1
