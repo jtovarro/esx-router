@@ -168,7 +168,7 @@ clusters:
     vms:
       defaultConfig:
         cluster: zone2
-        cpu: 6
+        cpu: 10
         memory: 32768
         disk:
         - 150
