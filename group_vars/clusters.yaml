@@ -140,7 +140,7 @@ clusters:
             address: 10.13.0.1
             interface: ens192
 
-- name: jct-ocp4
+- name: hub1-jct
   type: abi-vsphere
   cluster_definition:
     inventoryBaseDir: "{{ lookup('env', 'HOME') }}/src/ocp4-abi-vsphere-ansible/inventories/jct"
@@ -181,3 +181,43 @@ clusters:
       controlPlaneConfig: {}
       computeConfig:
         datastore: esx2-datastore1
+
+- name: sno1-jct
+  type: abi-vsphere
+  cluster_definition:
+    inventoryBaseDir: "{{ lookup('env', 'HOME') }}/src/ocp4-abi-vsphere-ansible/inventories/jct"
+    clusterBaseDir: ~/.local/ocp4/clusters
+
+    baseDomain: gmbros.local
+    controlPlaneReplicas: 1
+    computeReplicas: 0
+
+    networkType: OVNKubernetes
+    machineNetwork:
+      cidr: 10.12.0.0/24
+      gateway:
+        address: 10.12.0.1
+      dns-resolver:
+        config:
+          server:
+          - 10.12.0.1
+      firstIP: 10.12.0.219
+
+    ingressVIP: 10.12.0.219
+    apiVIP: 10.12.0.219
+    lbManaged: cluster
+
+    vms:
+      defaultConfig:
+        cluster: zone2
+        cpu: 8
+        memory: 32768
+        disk:
+        - 120
+        networks:
+        - name: ens192
+          network: VM Routed Network
+        datastore: esx2-datastore
+        root_device: "/dev/disk/by-path/pci-0000:03:00.0-scsi-0:0:0:0"
+      controlPlaneConfig: {}
+      computeConfig: {}
