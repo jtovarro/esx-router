@@ -100,6 +100,7 @@ clusters:
       apiVIP: 10.11.0.101
 ```
 
+A more advanced type of cluster can be defined, but it's intented to be deployed with ABI (https://github.com/soukron/ocp4-abi-vsphere-ansible) playbooks:
 ```yaml
 clusters:
   - name: ocp4-abi-vsphere-ha-dynamic
